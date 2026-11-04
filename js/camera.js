@@ -56,6 +56,8 @@ export function createCamera({ svg, world }) {
     if (value === last) return;
     last = value;
     world.style.transform = value;
+    // strokes are declared in px and divided by the zoom, so they stay constant
+    world.style.setProperty('--s', s.toFixed(4));
   }
 
   function focus(x, y, { animate = true } = {}) {
