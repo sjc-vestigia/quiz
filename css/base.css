@@ -90,6 +90,9 @@ h1 em {
 
 .parchment {
   position: relative;
+  /* contain the grain blend to the card: without this the multiply also
+     blends with the moving map behind it, which is recomposited every frame */
+  isolation: isolate;
   background:
     radial-gradient(120% 80% at 12% 8%, rgba(140, 104, 48, 0.16), transparent 60%),
     radial-gradient(90% 70% at 88% 92%, rgba(120, 86, 38, 0.2), transparent 65%),

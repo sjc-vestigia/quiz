@@ -143,11 +143,14 @@
 
 .print {
   opacity: 0;
-  transition: opacity 0.22s ease;
+  visibility: hidden;
+  transition: opacity 0.22s ease, visibility 0s 0.22s;
 }
 
 .print.on {
   opacity: 0.72;
+  visibility: visible;
+  transition: opacity 0.22s ease;
 }
 
 .print-sole,
@@ -242,12 +245,15 @@
 /* framed stills pinned to their point */
 .node-plate {
   opacity: 0;
-  transition: opacity 0.4s ease;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0s 0.4s;
   pointer-events: none;
 }
 
 .node-plate.on {
   opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease;
 }
 
 .plate-leader {
@@ -267,7 +273,6 @@
   stroke: var(--ink);
   stroke-width: 1.6;
   vector-effect: non-scaling-stroke;
-  filter: drop-shadow(0 6px 12px rgba(30, 20, 8, 0.35));
 }
 
 .plate-rule {
@@ -284,7 +289,6 @@
 
 .plate-tint {
   fill: rgba(232, 220, 192, 0.4);
-  mix-blend-mode: multiply;
   pointer-events: none;
 }
 
@@ -391,9 +395,6 @@
 .marker-halo {
   fill: var(--paper-hi);
   opacity: 0.6;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: marker-pulse 2s ease-in-out infinite;
 }
 
 .marker-sole,
@@ -411,17 +412,6 @@
   vector-effect: non-scaling-stroke;
 }
 
-@keyframes marker-pulse {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.25;
-    transform: scale(1.25);
-  }
-}
 
 .vignette {
   position: absolute;
@@ -437,7 +427,6 @@
   inset: 0;
   background-image: var(--grain);
   opacity: 0.07;
-  mix-blend-mode: multiply;
 }
 
 @media (prefers-reduced-motion: reduce) {

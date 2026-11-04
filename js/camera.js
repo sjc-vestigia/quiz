@@ -49,9 +49,13 @@ export function createCamera({ svg, world }) {
     place(cx, cy);
   }
 
+  let last = '';
   function apply() {
-    world.style.transformOrigin = '0 0';
-    world.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${s.toFixed(4)})`;
+    // Skip redundant style writes: each one is a full repaint of the map layer.
+    const value = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0) scale(${s.toFixed(4)})`;
+    if (value === last) return;
+    last = value;
+    world.style.transform = value;
   }
 
   function focus(x, y, { animate = true } = {}) {

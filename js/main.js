@@ -45,6 +45,16 @@ function setHud(step) {
   });
 }
 
+// Decode the next still before it is needed: arrival then costs nothing.
+const warmed = new Set();
+function warmImage(src) {
+  if (!src || warmed.has(src)) return;
+  warmed.add(src);
+  const img = new Image();
+  img.src = src;
+  if (img.decode) img.decode().catch(() => {});
+}
+
 function paint(sheet) {
   panel.classList.remove('away');
   panel.replaceChildren(sheet);
@@ -130,6 +140,12 @@ function renderQuestion(index) {
   setHud(index + 1);
   map.showPlate(LEGS[index].from, question.img);
   syncCameraAnchor();
+  const next = QUESTIONS[index + 1];
+  warmImage(next ? next.img : QUESTIONS[QUESTIONS.length - 1].img);
+  // on the last stop, fetch the souvenirs so the chest opens without a stall
+  if (index === QUESTIONS.length - 1) {
+    for (const result of Object.values(RESULTS)) warmImage(result.img);
+  }
   sheet.querySelector('.qtitle').focus({ preventScroll: true });
 }
 
