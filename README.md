@@ -4,7 +4,7 @@ A single-page personality quiz for the **Green & White Walkathon 26–27**. Four
 
 Static files only — no build step, no bundler, no backend, no analytics, no cookies, no storage. Plain ES modules served from disk.
 
-**Live at:** paste your Pages URL here.
+**Live at:** https://sjc-vestigia.github.io/quiz.
 
 ---
 
