@@ -1,0 +1,451 @@
+/* The world: sea, land, terrain, routes, labels, marker. */
+#map {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: var(--sea);
+}
+
+#world {
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.sea {
+  fill: url(#sea-tint) var(--sea);
+}
+
+.sea-hatch {
+  fill: url(#sea-hatch);
+  pointer-events: none;
+}
+
+.sea-hatch-line {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+  opacity: 0.08;
+}
+
+.coast {
+  fill: url(#land-tint) var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.coast-stipple {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 2.4;
+  stroke-dasharray: 1 9;
+  stroke-linecap: round;
+  opacity: 0.35;
+  vector-effect: non-scaling-stroke;
+}
+
+.islet {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.islet-shore {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+}
+
+.river {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  opacity: 0.45;
+  vector-effect: non-scaling-stroke;
+}
+
+.mountain {
+  fill: var(--paper);
+  stroke: var(--ink-soft);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  vector-effect: non-scaling-stroke;
+}
+
+.mountain-shade {
+  fill: var(--ink-soft);
+  stroke: none;
+  opacity: 0.14;
+}
+
+.mountain-snow {
+  fill: #fdf8ea;
+  stroke: var(--ink-soft);
+  stroke-width: 0.7;
+  stroke-linejoin: round;
+  opacity: 0.9;
+  vector-effect: non-scaling-stroke;
+}
+
+.tree {
+  fill: var(--ink-soft);
+  stroke: none;
+  opacity: 0.26;
+}
+
+.tree-trunk {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+  opacity: 0.3;
+}
+
+.wave {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+  opacity: 0.3;
+  vector-effect: non-scaling-stroke;
+}
+
+/* routes: faint until walked, then inked in wax with a draw-on */
+.route {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 2;
+  stroke-dasharray: 4 7;
+  stroke-linecap: round;
+  opacity: 0.35;
+  vector-effect: non-scaling-stroke;
+}
+
+.route.inked {
+  stroke: var(--wax);
+  stroke-dasharray: none;
+  stroke-width: 1.6;
+  opacity: 0.6;
+}
+
+/* the walked trail itself: footprints stamped behind the walker */
+.prints-set {
+  pointer-events: none;
+}
+
+.print {
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.print.on {
+  opacity: 0.72;
+}
+
+.print-sole,
+.print-heel {
+  fill: var(--wax);
+  stroke: rgba(59, 47, 30, 0.5);
+  stroke-width: 0.7;
+}
+
+.region-label.inked {
+  fill: var(--wax);
+  opacity: 1;
+}
+
+@keyframes ink {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* nodes */
+.node-ring {
+  fill: var(--paper-hi);
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+
+.node-ring-inner {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+  opacity: 0.7;
+  vector-effect: non-scaling-stroke;
+}
+
+.node-dot {
+  fill: var(--wax);
+}
+
+.node-numeral {
+  font-family: var(--font-display);
+  font-size: 15px;
+  fill: var(--ink-soft);
+  text-anchor: middle;
+  letter-spacing: 0.1em;
+}
+
+.node-label {
+  font-family: var(--font-display);
+  font-size: 15px;
+  fill: var(--ink);
+  text-anchor: middle;
+  letter-spacing: 0.14em;
+  font-variant-caps: all-small-caps;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+.node-chest {
+  fill: var(--ink-soft);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.node-keyhole {
+  fill: none;
+  stroke: var(--paper-hi);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.region-label {
+  font-family: var(--font-display);
+  font-size: 22px;
+  fill: var(--ink-soft);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  letter-spacing: 0.12em;
+  font-variant-caps: all-small-caps;
+  paint-order: stroke;
+  stroke: var(--paper);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+/* framed stills pinned to their point */
+.node-plate {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.node-plate.on {
+  opacity: 1;
+}
+
+.plate-leader {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1.1;
+  stroke-dasharray: 3 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.plate-pin {
+  fill: var(--wax);
+}
+
+.plate-paper {
+  fill: var(--paper-hi);
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 6px 12px rgba(30, 20, 8, 0.35));
+}
+
+.plate-rule {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 0.8;
+  opacity: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.plate-photo {
+  filter: sepia(0.5) saturate(0.72) contrast(1.06) brightness(1.02);
+}
+
+.plate-tint {
+  fill: rgba(232, 220, 192, 0.4);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.plate-caption {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  fill: var(--ink-soft);
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+
+/* no room for a plate between the HUD and the sheet on very short screens */
+@media (orientation: landscape) and (max-height: 500px) {
+  .node-plate {
+    display: none;
+  }
+}
+
+@media (max-height: 620px) {
+  .node-plate {
+    display: none;
+  }
+}
+
+/* compass, scale, cartouche, flourishes */
+.compass-ring {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1.2;
+  opacity: 0.55;
+  vector-effect: non-scaling-stroke;
+}
+
+.compass-ring-inner {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 0.9;
+  opacity: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.compass-star {
+  fill: var(--ink-soft);
+  opacity: 0.6;
+}
+
+.compass-star-soft {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+  opacity: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.compass-n {
+  font-family: var(--font-display);
+  font-size: 20px;
+  fill: var(--ink);
+  text-anchor: middle;
+  letter-spacing: 0.1em;
+}
+
+.scale-bar,
+.scale-tick {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.scale-text {
+  font-family: var(--font-display);
+  font-size: 12px;
+  fill: var(--ink-soft);
+  letter-spacing: 0.14em;
+}
+
+.cartouche-frame {
+  fill: var(--paper-hi);
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  opacity: 0.92;
+  vector-effect: non-scaling-stroke;
+}
+
+.cartouche-text {
+  font-family: var(--font-display);
+  font-size: 20px;
+  fill: var(--ink);
+  text-anchor: middle;
+  letter-spacing: 0.22em;
+}
+
+.flourish {
+  fill: none;
+  stroke: var(--ink-soft);
+  stroke-width: 1.2;
+  opacity: 0.4;
+  vector-effect: non-scaling-stroke;
+}
+
+/* player marker */
+.marker-halo {
+  fill: var(--paper-hi);
+  opacity: 0.6;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: marker-pulse 2s ease-in-out infinite;
+}
+
+.marker-sole,
+.marker-heel {
+  fill: var(--wax);
+  stroke: var(--ink);
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+}
+
+.marker-notch {
+  fill: var(--gold);
+  stroke: var(--ink);
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+
+@keyframes marker-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: scale(1.25);
+  }
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, rgba(27, 20, 16, 0) 45%, rgba(27, 20, 16, 0.5) 100%);
+}
+
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  opacity: 0.07;
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marker-halo {
+    animation: none;
+  }
+  .route,
+  .route.inked {
+    animation: none;
+  }
+}

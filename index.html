@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1b1410">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231b1410'/%3E%3Cellipse cx='16' cy='12.4' rx='5.4' ry='7.4' fill='%238b2f1f'/%3E%3Cellipse cx='16' cy='24.6' rx='3.4' ry='4' fill='%238b2f1f'/%3E%3C/svg%3E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>VESTIGIA 26–27 — What Trace Did You Leave?</title>
+<meta name="description" content="Green & White Walkathon quiz. Walk the route, screenshot your trace, tag @sjcinteractclub to win.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/map.css">
+<link rel="stylesheet" href="css/overlay.css">
+</head>
+<body>
+<main id="stage">
+  <svg id="map" aria-hidden="true" focusable="false"></svg>
+  <div class="vignette"></div>
+
+  <header id="hud" class="parchment">
+    <p class="eyebrow" id="hud-eyebrow"></p>
+    <div class="hud-track"><div class="hud-steps" id="hud-steps"></div></div>
+    <div class="hud-row">
+      <span id="hud-stop">TRAILHEAD</span>
+      <span id="hud-pct">0%</span>
+    </div>
+  </header>
+
+  <section id="panel"></section>
+
+  <div id="chest-layer" hidden>
+    <img class="vault" id="vault-plate" alt="" hidden>
+    <button id="chest" aria-label="Open the chest">
+      <svg viewBox="0 0 220 190" aria-hidden="true" focusable="false">
+        <ellipse class="chest-shadow" cx="110" cy="164" rx="80" ry="12"/>
+        <g id="chest-lid">
+          <path class="chest-wood" d="M34,88 C34,52 68,30 110,30 C152,30 186,52 186,88 L186,98 L34,98 Z"/>
+          <path class="chest-band" d="M66,90 C66,58 86,42 110,42 C134,42 154,58 154,90"/>
+          <rect class="chest-band" x="104" y="30" width="12" height="68"/>
+          <circle class="chest-rivet" cx="64" cy="74" r="3.4"/>
+          <circle class="chest-rivet" cx="156" cy="74" r="3.4"/>
+        </g>
+        <path class="chest-wood" d="M32,98 L188,98 L188,150 L32,150 Z"/>
+        <rect class="chest-band" x="104" y="98" width="12" height="52"/>
+        <rect class="chest-band" x="32" y="126" width="156" height="8"/>
+        <circle class="chest-lock" cx="110" cy="116" r="9"/>
+        <path class="chest-keyhole" d="M110,111 L110,118"/>
+        <circle class="chest-rivet" cx="44" cy="144" r="3"/>
+        <circle class="chest-rivet" cx="176" cy="144" r="3"/>
+      </svg>
+    </button>
+    <div class="reward-host" data-reward hidden></div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+</main>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
