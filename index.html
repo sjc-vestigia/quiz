@@ -23,79 +23,9 @@
 
   <section id="panel"></section>
 
-  <div id="chest-layer" hidden>
+  <div id="reveal-layer" hidden>
     <img class="vault" id="vault-plate" alt="" hidden>
-    <div class="clouds" aria-hidden="true"><span class="cloud c1"></span><span class="cloud c2"></span><span class="cloud c3"></span></div>
-    <button id="chest" aria-label="Open the chest">
-      <svg viewBox="0 0 240 210" aria-hidden="true" focusable="false">
-        <defs>
-          <linearGradient id="woodFront" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#b57f46"/>
-            <stop offset="52%" stop-color="#8d5a2c"/>
-            <stop offset="100%" stop-color="#653c1c"/>
-          </linearGradient>
-          <linearGradient id="woodSide" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#5d3a1f"/>
-            <stop offset="100%" stop-color="#34200f"/>
-          </linearGradient>
-          <linearGradient id="woodLid" x1="0.15" y1="0" x2="0.85" y2="1">
-            <stop offset="0%" stop-color="#d7a05d"/>
-            <stop offset="52%" stop-color="#a06a34"/>
-            <stop offset="100%" stop-color="#653c1c"/>
-          </linearGradient>
-          <radialGradient id="hole" cx="0.42" cy="0.3" r="0.85">
-            <stop offset="0%" stop-color="#43290f"/>
-            <stop offset="100%" stop-color="#0e0804"/>
-          </radialGradient>
-          <linearGradient id="iron" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#8a8a95"/>
-            <stop offset="45%" stop-color="#3d3d47"/>
-            <stop offset="100%" stop-color="#202027"/>
-          </linearGradient>
-          <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#ffeaa8"/>
-            <stop offset="45%" stop-color="#e0ae4a"/>
-            <stop offset="100%" stop-color="#a4722a"/>
-          </linearGradient>
-        </defs>
-
-        <ellipse class="chest-shadow" cx="121" cy="184" rx="84" ry="11"/>
-
-        <g id="chest-lid">
-          <path d="M38,112 C38,72 72,50 113,50 C154,50 188,72 188,112 Z"
-                fill="url(#woodLid)" stroke="#33200f" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M72,111 C72,79 90,60 113,54" fill="none" stroke="#5b3517" stroke-width="1" opacity="0.3"/>
-          <path d="M154,111 C154,79 136,60 113,54" fill="none" stroke="#5b3517" stroke-width="1" opacity="0.3"/>
-          <path d="M70,112 C70,78 89,57 113,51" fill="none" stroke="url(#iron)" stroke-width="11" stroke-linecap="round"/>
-          <path d="M156,112 C156,78 137,57 113,51" fill="none" stroke="url(#iron)" stroke-width="11" stroke-linecap="round"/>
-          <circle class="chest-rivet" cx="71" cy="95" r="2.6"/>
-          <circle class="chest-rivet" cx="155" cy="95" r="2.6"/>
-        </g>
-
-        <ellipse class="chest-interior" cx="113" cy="112" rx="76" ry="15"/>
-
-        <path d="M188,112 L212,103 L212,169 L188,178 Z"
-              fill="url(#woodSide)" stroke="#33200f" stroke-width="2" stroke-linejoin="round"/>
-        <path d="M38,112 L188,112 L188,178 L38,178 Z"
-              fill="url(#woodFront)" stroke="#33200f" stroke-width="2" stroke-linejoin="round"/>
-
-        <path d="M38,112 L188,112 L188,119 L38,119 Z" fill="#4b2d15" opacity="0.55"/>
-        <path d="M40,112 L186,112" stroke="#e0ae6a" stroke-width="1.4" opacity="0.5"/>
-        <path d="M38,171 L188,171 L188,178 L38,178 Z" fill="#3d230f" opacity="0.55"/>
-
-        <rect x="66" y="112" width="12" height="66" fill="url(#iron)" opacity="0.95"/>
-        <rect x="148" y="112" width="12" height="66" fill="url(#iron)" opacity="0.95"/>
-
-        <rect class="chest-lock" x="103" y="122" width="20" height="24" rx="3"/>
-        <circle class="chest-keyhole" cx="113" cy="131" r="3.1"/>
-        <path d="M113,133 L113,140" class="chest-keyhole-slot"/>
-
-        <circle class="chest-rivet" cx="72" cy="150" r="2.8"/>
-        <circle class="chest-rivet" cx="154" cy="150" r="2.8"/>
-        <circle class="chest-rivet" cx="50" cy="160" r="2.2"/>
-        <circle class="chest-rivet" cx="176" cy="160" r="2.2"/>
-      </svg>
-    </button>
+    <div class="dust" aria-hidden="true"><span></span><span></span><span></span></div>
     <div class="reward-host" data-reward hidden></div>
   </div>
 

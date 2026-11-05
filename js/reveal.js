@@ -1,4 +1,5 @@
-// Chest reveal and reward card.
+// The ending: the card is uncovered out of the ground rather than pulled from
+// a chest. Nothing to click - the build-up starts on arrival at The Hoard.
 
 export function renderReward(result, config) {
   const card = document.createElement('div');
@@ -38,40 +39,30 @@ export function renderReward(result, config) {
   return card;
 }
 
-export function createChest({ root, onRewardShown }) {
-  const button = root.querySelector('#chest');
-  const lid = root.querySelector('#chest-lid');
+export function createReveal({ root, onRewardShown }) {
   const host = root.querySelector('[data-reward]');
   const vault = root.querySelector('.vault');
-  let opened = false;
-  let resolveOpen = null;
+  let shown = false;
+  let timer = 0;
 
-  function open() {
-    if (opened) return Promise.resolve();
-    opened = true;
-    button.disabled = true;
-    root.classList.add('open');
-    requestAnimationFrame(() => lid.classList.add('lift'));
-    return new Promise((resolve) => {
-      resolveOpen = resolve;
-      setTimeout(() => {
-        host.hidden = false;
-        host.classList.add('shown');
-        root.classList.add('revealed');
-        if (onRewardShown) onRewardShown(host.firstElementChild);
-        if (resolveOpen) resolveOpen();
-        resolveOpen = null;
-      }, 700);
-    });
+  function show() {
+    if (shown) return;
+    shown = true;
+    root.hidden = false;
+    root.classList.add('uncovering');
+    host.hidden = false;
+
+    timer = setTimeout(() => {
+      host.classList.add('shown');
+      if (onRewardShown) onRewardShown(host.firstElementChild);
+    }, 450);
   }
 
   function close() {
-    opened = false;
-    resolveOpen = null;
+    clearTimeout(timer);
+    shown = false;
     root.hidden = true;
-    root.classList.remove('open');
-    root.classList.remove('revealed');
-    lid.classList.remove('lift');
+    root.classList.remove('uncovering');
     host.hidden = true;
     host.classList.remove('shown');
     host.replaceChildren();
@@ -79,10 +70,7 @@ export function createChest({ root, onRewardShown }) {
       vault.hidden = true;
       vault.removeAttribute('src');
     }
-    button.disabled = false;
   }
 
-  if (button) button.addEventListener('click', () => open());
-
-  return { open, close };
+  return { show, close };
 }

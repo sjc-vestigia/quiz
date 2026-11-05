@@ -1,17 +1,17 @@
-// Wires map, camera, quiz, chest and the stop cards.
+// Wires map, camera, quiz, the uncover and the stop cards.
 import { CONFIG } from './config.js';
 import { WORLD, NODES, LEGS, QUESTIONS, RESULTS, PLATES, COVER } from './data.js';
 import { buildWorld } from './map.js';
 import { createCamera } from './camera.js';
 import { createQuiz } from './quiz.js';
-import { createChest, renderReward } from './chest.js';
+import { createReveal, renderReward } from './reveal.js';
 import { shareResult } from './share.js';
 
 const stage = document.getElementById('stage');
 const svg = document.getElementById('map');
 const panel = document.getElementById('panel');
-const chestLayer = document.getElementById('chest-layer');
-const rewardHost = chestLayer.querySelector('[data-reward]');
+const revealLayer = document.getElementById('reveal-layer');
+const rewardHost = revealLayer.querySelector('[data-reward]');
 
 const map = buildWorld({ svg, world: WORLD, nodes: NODES, legs: LEGS, plates: PLATES });
 const camera = createCamera({ svg, world: map.group });
@@ -114,13 +114,12 @@ function finish(axis) {
     vault.hidden = false;
   }
   rewardHost.replaceChildren(renderReward(currentResult, CONFIG));
-  chestLayer.hidden = false;
-  const chestButton = chestLayer.querySelector('#chest');
-  if (chestButton) chestButton.focus({ preventScroll: true });
+  // the ground gives the card up on its own; nothing to click
+  reveal.show();
 }
 
-const chest = createChest({
-  root: chestLayer,
+const reveal = createReveal({
+  root: revealLayer,
   onRewardShown: (card) => {
     const share = card && card.querySelector('[data-act="share"]');
     if (share) share.focus({ preventScroll: true });
@@ -128,7 +127,7 @@ const chest = createChest({
 });
 
 function restart() {
-  chest.close();
+  reveal.close();
   currentResult = null;
   renderCover();
   quiz.reset();
