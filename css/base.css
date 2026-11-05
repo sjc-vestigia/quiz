@@ -1,9 +1,9 @@
 /* Tokens, page frame, parchment surfaces, shared type. */
 :root {
-  --paper: #e8dcc0;
-  --paper-hi: #f4ead2;
-  --ink: #3b2f1e;
-  --ink-soft: #6b5a3e;
+  --paper: #f2f4ec;
+  --paper-hi: #fbfcf6;
+  --ink: #2b332c;
+  --ink-soft: #59665a;
   --sea: #a9c9c4;
   --sea-deep: #7fa9a8;
   --grass: #d8e7b4;
@@ -101,38 +101,12 @@ h1 em {
   flex: none;
 }
 
+/* one paper for the whole site: white, marked, never clean */
 .parchment {
   position: relative;
   /* contain the grain blend to the card: without this the multiply also
      blends with the moving map behind it, which is recomposited every frame */
   isolation: isolate;
-  background:
-    radial-gradient(120% 80% at 12% 8%, rgba(140, 104, 48, 0.16), transparent 60%),
-    radial-gradient(90% 70% at 88% 92%, rgba(120, 86, 38, 0.2), transparent 65%),
-    radial-gradient(60% 50% at 70% 20%, rgba(255, 250, 232, 0.5), transparent 70%),
-    radial-gradient(40% 30% at 30% 80%, rgba(150, 112, 54, 0.12), transparent 70%),
-    var(--paper);
-  color: var(--ink);
-  box-shadow: inset 0 0 40px rgba(90, 60, 20, 0.35), 0 10px 40px rgba(0, 0, 0, 0.5);
-  outline: 1px solid rgba(59, 47, 30, 0.6);
-  border-radius: 2px 14px 3px 10px / 10px 3px 12px 4px;
-}
-
-.parchment::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-image: var(--grain);
-  opacity: 0.14;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-}
-
-/* white paper: still marked, still a little dirty, just not cream */
-.parchment-white {
-  --ink: #2b332c;
-  --ink-soft: #59665a;
   background:
     radial-gradient(30% 22% at 12% 10%, rgba(96, 118, 88, 0.26), transparent 68%),
     radial-gradient(24% 18% at 90% 16%, rgba(120, 130, 110, 0.22), transparent 70%),
@@ -147,11 +121,19 @@ h1 em {
     inset 0 0 46px rgba(88, 106, 80, 0.26),
     inset 0 0 6px rgba(58, 68, 56, 0.3),
     0 12px 40px rgba(0, 0, 0, 0.45);
-  outline-color: rgba(68, 82, 66, 0.55);
+  outline: 1px solid rgba(68, 82, 66, 0.55);
+  border-radius: 2px 14px 3px 10px / 10px 3px 12px 4px;
 }
 
-.parchment-white::after {
+.parchment::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: var(--grain);
   opacity: 0.3;
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
 
 .parchment > * {
@@ -198,7 +180,7 @@ h1 em {
 }
 
 .muted {
-  color: #8a8464;
+  color: #7c8878;
 }
 
 .boot-failed::after {

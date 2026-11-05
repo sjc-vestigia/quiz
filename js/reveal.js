@@ -3,7 +3,7 @@
 
 export function renderReward(result, config) {
   const card = document.createElement('div');
-  card.className = 'reward parchment parchment-white';
+  card.className = 'reward parchment';
   card.innerHTML =
     '<div class="reward-body">' +
     '<div class="reward-head">' +
