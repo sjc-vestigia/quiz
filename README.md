@@ -39,9 +39,15 @@ Scoring is three counters (`k`, `s`, `p`), one per answer axis; the highest wins
 ## Run locally
 
 ```sh
-python3 -m http.server 8080
+python3 serve.py 8080          # sends Cache-Control: no-store
 # then open http://127.0.0.1:8080/
 ```
+
+`serve.py` is a 30-line static server whose only job is to disable browser
+caching. `python3 -m http.server 8080` also works, but it sends only
+`Last-Modified`, so browsers cache ES modules heuristically and will happily
+run an old module against new HTML after an edit — which shows up as a blank
+page. Hard-reload once if you switch back to it.
 
 `file://` will not work: ES modules and `fetch` need an HTTP origin. Any static server is fine.
 

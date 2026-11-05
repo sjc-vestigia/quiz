@@ -158,3 +158,4 @@ rewardHost.addEventListener('click', (event) => {
 
 quiz.reset();
 renderCover();
+window.__vestigiaBooted = true;

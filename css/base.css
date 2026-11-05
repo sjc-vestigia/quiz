@@ -167,6 +167,21 @@ h1 em {
   color: #8a8464;
 }
 
+.boot-failed::after {
+  content: "The walk could not load. Reload this page to update it.";
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  text-align: center;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--paper);
+  background: var(--desk);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
