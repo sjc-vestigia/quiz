@@ -14,18 +14,17 @@ const LAND =
   'C300,1428 200,1396 92,1378 C60,1330 80,1280 140,1240 ' +
   'C200,1060 90,940 120,760 C150,580 40,420 120,320 Z';
 
-function mountains(x, y, count) {
+// rolling grass hills rather than crags
+function hills(x, y, count) {
   let out = '';
   for (let i = 0; i < count; i += 1) {
-    const cx = x + i * 58;
-    const h = 44 + (i % 2) * 20;
-    const w = 50 + (i % 3) * 9;
+    const cx = x + i * 74;
+    const h = 26 + (i % 2) * 9;
+    const w = 66 + (i % 3) * 12;
     out +=
-      `<path class="mountain" d="M${cx - w},${y} L${cx},${y - h} L${cx + w},${y} Z"/>` +
-      `<path class="mountain-shade" d="M${cx},${y - h} L${cx + w},${y} L${cx + w * 0.12},${y} Z"/>` +
-      `<path class="mountain-snow" d="M${cx},${y - h} L${cx + w * 0.26},${y - h * 0.72} ` +
-      `L${cx + w * 0.1},${y - h * 0.7} L${cx - w * 0.02},${y - h * 0.76} L${cx - w * 0.14},${y - h * 0.68} ` +
-      `L${cx - w * 0.26},${y - h * 0.72} Z"/>`;
+      `<path class="hill" d="M${cx - w},${y} C${cx - w * 0.5},${y - h * 1.25} ${cx + w * 0.5},${y - h * 1.25} ${cx + w},${y} Z"/><path class="hill-shade" d="M${cx + w * 0.1},${y - h * 0.62} C${cx + w * 0.5},${y - h * 0.7} ${cx + w * 0.8},${y - h * 0.35} ${cx + w},${y} L${cx + w * 0.1},${y} Z"/>` +
+      `<path class="hill-light" d="M${cx - w * 0.5},${y - h * 0.62} C${cx - w * 0.18},${y - h * 1.02} ${cx + w * 0.14},${y - h * 1.04} ${cx + w * 0.4},${y - h * 0.74}"/>` +
+      `<path class="hill-base" d="M${cx - w * 0.82},${y + 2} Q${cx},${y + 7} ${cx + w * 0.82},${y + 2}"/>`;
   }
   return out;
 }
@@ -36,10 +35,12 @@ function forest(x, y, count) {
     const cx = x + (i % 2) * 26 + Math.floor(i / 2) * 32;
     const base = y - Math.floor(i / 2) * 12;
     const h = 26 + ((i * 7) % 3) * 7;
+    const r = 11 + (i % 3);
     out +=
-      `<path class="tree" d="M${cx},${base - h} L${cx + 10},${base - 4} L${cx - 10},${base - 4} Z"/>` +
-      `<path class="tree" d="M${cx},${base - h * 0.62} L${cx + 12},${base + 5} L${cx - 12},${base + 5} Z"/>` +
-      `<path class="tree-trunk" d="M${cx},${base + 3} L${cx},${base + 10}"/>`;
+      `<circle class="tree" cx="${cx}" cy="${base - 16}" r="${r}"/>` +
+      `<circle class="tree" cx="${cx - r * 0.8}" cy="${base - 7}" r="${r * 0.8}"/>` +
+      `<circle class="tree" cx="${cx + r * 0.8}" cy="${base - 7}" r="${r * 0.8}"/>` +
+      `<path class="tree-trunk" d="M${cx},${base - 2} L${cx},${base + 8}"/>`;
   }
   return out;
 }
@@ -213,14 +214,14 @@ export function buildWorld({ svg, world, nodes, legs, plates }) {
   parts.push(
     '<defs>' +
       '<radialGradient id="sea-tint" cx="50%" cy="46%" r="72%">' +
-      '<stop offset="0%" stop-color="#d8c9a2"/>' +
-      '<stop offset="62%" stop-color="#c8b58c"/>' +
-      '<stop offset="100%" stop-color="#9d8760"/>' +
+      '<stop offset="0%" stop-color="#bcdad0"/>' +
+      '<stop offset="62%" stop-color="#a2c7c2"/>' +
+      '<stop offset="100%" stop-color="#7ea9a6"/>' +
       '</radialGradient>' +
       '<radialGradient id="land-tint" cx="46%" cy="40%" r="68%">' +
-      '<stop offset="0%" stop-color="#f6ecd6"/>' +
-      '<stop offset="70%" stop-color="#e8dcc0"/>' +
-      '<stop offset="100%" stop-color="#dccdaa"/>' +
+      '<stop offset="0%" stop-color="#f1f7de"/>' +
+      '<stop offset="58%" stop-color="#d5e6ac"/>' +
+      '<stop offset="100%" stop-color="#b5d48a"/>' +
       '</radialGradient>' +
       '<pattern id="sea-hatch" width="72" height="30" patternUnits="userSpaceOnUse">' +
       '<path d="M0,22 q18,-12 36,0 t36,0" class="sea-hatch-line"/>' +
@@ -254,22 +255,22 @@ export function buildWorld({ svg, world, nodes, legs, plates }) {
   // decorative terrain
   parts.push(
     '<g class="terrain">' +
-      mountains(700, 760, 3) +
-      mountains(1160, 470, 2) +
-      mountains(2480, 1450, 3) +
-      mountains(320, 1240, 2) +
+      hills(700, 760, 3) +
+      hills(1160, 470, 2) +
+      hills(2480, 1450, 3) +
+      hills(320, 1240, 2) +
       forest(1040, 720, 4) +
       forest(1960, 1580, 4) +
       forest(2620, 1160, 3) +
       forest(1080, 1700, 3) +
-      mountains(1180, 1560, 2) +
+      hills(1180, 1560, 2) +
       forest(430, 1150, 3) +
-      mountains(620, 1100, 2) +
+      hills(620, 1100, 2) +
       forest(930, 1600, 3) +
       forest(640, 1240, 2) +
-      mountains(1040, 1500, 2) +
+      hills(1040, 1500, 2) +
       forest(1500, 760, 2) +
-      mountains(2050, 1450, 2) +
+      hills(2050, 1450, 2) +
       waves(1720, 1760) +
       waves(520, 400) +
       waves(2960, 960) +

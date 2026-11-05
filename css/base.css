@@ -4,14 +4,23 @@
   --paper-hi: #f4ead2;
   --ink: #3b2f1e;
   --ink-soft: #6b5a3e;
-  --sea: #cbb98f;
+  --sea: #a9c9c4;
+  --sea-deep: #7fa9a8;
+  --grass: #d8e7b4;
+  --grass-hi: #ecf3d4;
+  --grass-low: #b7d68b;
+  --grass-hill: #a9cb7d;
+  --leaf: #6f9a55;
+  --leaf-deep: #4d7440;
+  --water: #6fa7b5;
+  --map-ink: #4f5f3c;
   --wax: #8b2f1f;
   --gold: #b08948;
   /* the VESTIGIA title yellow, sampled from the promo still, deepened so it
      holds up on parchment */
   --trail: #e8b02c;
   --trail-off: #8d8574;
-  --desk: #1b1410;
+  --desk: #14211a;
   --font-display: "Cinzel", "Times New Roman", Times, serif;
   --font-body: "IM Fell English", "Times New Roman", Times, serif;
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");

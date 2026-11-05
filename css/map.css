@@ -25,15 +25,16 @@
 
 .sea-hatch-line {
   fill: none;
-  stroke: var(--ink-soft);
+  stroke: var(--water);
   stroke-width: 1;
   opacity: 0.08;
 }
 
 .coast {
-  fill: url(#land-tint) var(--paper);
-  stroke: var(--ink);
-  stroke-width: calc(1.6px / var(--s, 1));
+  fill: url(#land-tint) var(--grass);
+  stroke: var(--map-ink);
+  stroke-width: calc(1.5px / var(--s, 1));
+  opacity: 1;
   stroke-linejoin: round;
 }
 
@@ -47,8 +48,8 @@
 }
 
 .islet {
-  fill: var(--paper);
-  stroke: var(--ink);
+  fill: var(--grass-hi);
+  stroke: var(--map-ink);
   stroke-width: calc(1.4px / var(--s, 1));
   stroke-linejoin: round;
 }
@@ -62,50 +63,58 @@
 
 .river {
   fill: none;
-  stroke: var(--ink-soft);
+  stroke: var(--water);
   stroke-width: calc(1.3px / var(--s, 1));
   stroke-linecap: round;
   opacity: 0.45;
 }
 
-.mountain {
-  fill: var(--paper);
-  stroke: var(--ink-soft);
-  stroke-width: calc(1.2px / var(--s, 1));
-  stroke-linejoin: round;
-  opacity: 0.85;
-}
-
-.mountain-shade {
-  fill: var(--ink-soft);
+.hill {
+  fill: var(--grass-hill);
   stroke: none;
-  opacity: 0.14;
+  opacity: 1;
 }
 
-.mountain-snow {
-  fill: #fdf8ea;
-  stroke: var(--ink-soft);
-  stroke-width: calc(0.7px / var(--s, 1));
-  stroke-linejoin: round;
-  opacity: 0.9;
+.hill-shade {
+  fill: var(--leaf-deep);
+  stroke: none;
+  opacity: 0.16;
+}
+
+
+.hill-base {
+  fill: none;
+  stroke: var(--leaf-deep);
+  stroke-width: calc(1.4px / var(--s, 1));
+  stroke-linecap: round;
+  opacity: 0.3;
+}
+
+.hill-light {
+  fill: none;
+  stroke: var(--grass-hi);
+  stroke-width: calc(2.2px / var(--s, 1));
+  stroke-linecap: round;
+  opacity: 0.7;
 }
 
 .tree {
-  fill: var(--ink-soft);
-  stroke: none;
-  opacity: 0.26;
+  fill: var(--leaf);
+  stroke: var(--leaf-deep);
+  stroke-width: calc(0.6px / var(--s, 1));
+  opacity: 0.9;
 }
 
 .tree-trunk {
   fill: none;
-  stroke: var(--ink-soft);
+  stroke: var(--leaf-deep);
   stroke-width: 1;
-  opacity: 0.3;
+  opacity: 0.55;
 }
 
 .wave {
   fill: none;
-  stroke: var(--ink-soft);
+  stroke: var(--water);
   stroke-width: calc(1px / var(--s, 1));
   opacity: 0.3;
 }
@@ -174,7 +183,7 @@
 .node-label {
   font-family: var(--font-display);
   font-size: 15px;
-  fill: var(--ink);
+  fill: var(--map-ink);
   text-anchor: middle;
   letter-spacing: 0.14em;
   font-variant-caps: all-small-caps;
@@ -200,7 +209,7 @@
 .region-label {
   font-family: var(--font-display);
   font-size: 22px;
-  fill: var(--ink-soft);
+  fill: var(--map-ink);
   text-anchor: middle;
   dominant-baseline: middle;
   letter-spacing: 0.12em;
@@ -284,20 +293,20 @@
 /* compass, scale, cartouche, flourishes */
 .compass-ring {
   fill: none;
-  stroke: var(--ink-soft);
+  stroke: var(--map-ink);
   stroke-width: calc(1.2px / var(--s, 1));
   opacity: 0.55;
 }
 
 .compass-ring-inner {
   fill: none;
-  stroke: var(--ink-soft);
+  stroke: var(--map-ink);
   stroke-width: calc(0.9px / var(--s, 1));
   opacity: 0.4;
 }
 
 .compass-star {
-  fill: var(--ink-soft);
+  fill: var(--map-ink);
   opacity: 0.6;
 }
 
@@ -311,7 +320,7 @@
 .compass-n {
   font-family: var(--font-display);
   font-size: 20px;
-  fill: var(--ink);
+  fill: var(--map-ink);
   text-anchor: middle;
   letter-spacing: 0.1em;
 }
@@ -377,7 +386,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 45%, rgba(27, 20, 16, 0) 45%, rgba(27, 20, 16, 0.5) 100%);
+  background: radial-gradient(ellipse at 50% 45%, rgba(20, 33, 26, 0) 45%, rgba(20, 33, 26, 0.45) 100%);
 }
 
 .vignette::after {
