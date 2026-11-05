@@ -1,4 +1,4 @@
-// Wires map, camera, quiz, chest and the panel states.
+// Wires map, camera, quiz, chest and the stop cards.
 import { CONFIG } from './config.js';
 import { WORLD, NODES, LEGS, QUESTIONS, RESULTS, PLATES, COVER } from './data.js';
 import { buildWorld } from './map.js';
@@ -7,43 +7,16 @@ import { createQuiz } from './quiz.js';
 import { createChest, renderReward } from './chest.js';
 import { shareResult } from './share.js';
 
+const stage = document.getElementById('stage');
 const svg = document.getElementById('map');
 const panel = document.getElementById('panel');
 const chestLayer = document.getElementById('chest-layer');
 const rewardHost = chestLayer.querySelector('[data-reward]');
-const hud = {
-  eyebrow: document.getElementById('hud-eyebrow'),
-  stop: document.getElementById('hud-stop'),
-  pct: document.getElementById('hud-pct'),
-  steps: document.getElementById('hud-steps'),
-};
-
-hud.eyebrow.textContent = CONFIG.eyebrow;
-const stepEls = QUESTIONS.map(() => {
-  const step = document.createElement('span');
-  step.className = 'step';
-  step.innerHTML =
-    '<svg viewBox="0 0 18 28" aria-hidden="true" focusable="false">' +
-    '<ellipse cx="9" cy="9.4" rx="4.5" ry="7"/>' +
-    '<ellipse cx="9" cy="21.4" rx="2.9" ry="3.4"/>' +
-    '</svg>';
-  hud.steps.appendChild(step);
-  return step;
-});
 
 const map = buildWorld({ svg, world: WORLD, nodes: NODES, legs: LEGS, plates: PLATES });
 const camera = createCamera({ svg, world: map.group });
 
 let currentResult = null;
-
-function setHud(step) {
-  hud.stop.textContent = step > 0 ? `STOP ${Math.min(step, QUESTIONS.length)} / ${QUESTIONS.length}` : 'TRAILHEAD';
-  hud.pct.textContent = `${step * 25}%`;
-  stepEls.forEach((el, i) => {
-    el.classList.toggle('on', i < step);
-    el.classList.toggle('current', i === step - 1);
-  });
-}
 
 // Decode the next still before it is needed: arrival then costs nothing.
 const warmed = new Set();
@@ -55,30 +28,9 @@ function warmImage(src) {
   if (img.decode) img.decode().catch(() => {});
 }
 
-function paint(sheet) {
+function paint(node) {
   panel.classList.remove('away');
-  panel.replaceChildren(sheet);
-}
-
-// Put the focused point high enough that its plate clears both the HUD
-// and the bottom sheet.
-const PLATE_H = 116; // world units, mirrors js/map.js
-const PLATE_GAP = 56;
-
-function syncCameraAnchor() {
-  const hudBottom = document.getElementById('hud').getBoundingClientRect().bottom;
-  const sheet = panel.querySelector('.sheet');
-  const sheetTop = sheet ? sheet.getBoundingClientRect().top : window.innerHeight;
-  const s = camera.scale();
-  const plateH = PLATE_H * s;
-  const gap = PLATE_GAP * s;
-  const groupH = plateH + gap + 14;
-  const centre = (hudBottom + sheetTop) / 2;
-  const top = Math.max(hudBottom + 8, Math.min(centre - groupH / 2, sheetTop - 12 - groupH));
-  // keep the node's own label above the sheet too
-  const inset = 38 * s + 14;
-  const markerY = Math.min(top + plateH + gap, sheetTop - inset);
-  camera.setAnchorY(markerY / window.innerHeight);
+  panel.replaceChildren(node);
 }
 
 function renderCover() {
@@ -96,69 +48,72 @@ function renderCover() {
     '<div style="height:14px"></div>' +
     '<button class="btn" id="start-btn" type="button">Start the walk →</button>' +
     '<p class="tiny">Free entry · 3 winners · Tag @sjcinteractclub + #VESTIGIA2627</p>';
+  panel.classList.remove('stop');
+  stage.classList.remove('stop-open');
   paint(sheet);
-  setHud(0);
   map.showPlate('start', COVER.img);
-  syncCameraAnchor();
   sheet.querySelector('#start-btn').addEventListener('click', () => quiz.start());
 }
 
 function renderQuestion(index) {
   const question = QUESTIONS[index];
-  const pct = Math.round(((index + 1) / QUESTIONS.length) * 100);
-  const sheet = document.createElement('section');
-  sheet.className = 'sheet parchment';
-  sheet.innerHTML =
-    `<div class="qnum">${question.num}</div>` +
-    `<h2 class="qtitle" tabindex="-1">${question.title}</h2>` +
-    `<p class="qhint">${question.hint}</p>` +
-    '<div class="opts"></div>' +
-    '<div class="trail"><div class="dot done">👣</div>' +
-    `<div class="trail-line"><i style="transform:scaleX(${pct / 100})"></i></div>` +
-    '<div class="dot">🏁</div></div>' +
-    `<div class="meta"><span>STOP ${index + 1} / ${QUESTIONS.length}</span><span>${pct}%</span></div>`;
+  const place = NODES[LEGS[index].from].label;
 
-  const opts = sheet.querySelector('.opts');
+  const card = document.createElement('article');
+  card.className = 'stop-card parchment';
+  card.innerHTML =
+    `<p class="stop-num">Stop ${index + 1} / ${QUESTIONS.length}</p>` +
+    '<figure class="stop-plate">' +
+    `<div class="stop-media"><img src="${question.img}" alt="${place} — VESTIGIA film still" decoding="async"></div>` +
+    `<figcaption tabindex="-1">${question.title}</figcaption>` +
+    '</figure>' +
+    `<p class="stop-hint">${question.hint}</p>` +
+    '<div class="signs"></div>';
+
+  const signs = card.querySelector('.signs');
   for (const option of question.options) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'opt';
+    const sign = document.createElement('button');
+    sign.type = 'button';
+    sign.className = 'sign';
     const label = document.createElement('span');
     label.textContent = option.label;
     const note = document.createElement('small');
     note.textContent = option.note;
-    button.append(label, note);
-    button.addEventListener('click', () => {
+    sign.append(label, note);
+    sign.addEventListener('click', () => {
       panel.classList.add('away');
+      stage.classList.remove('stop-open');
       map.hidePlates();
       quiz.choose(option.axis);
     });
-    opts.append(button);
+    signs.append(sign);
   }
 
-  paint(sheet);
-  setHud(index + 1);
+  panel.classList.add('stop');
+  paint(card);
+  stage.classList.add('stop-open');
   map.showPlate(LEGS[index].from, question.img);
-  syncCameraAnchor();
+
+  const caption = card.querySelector('figcaption');
+  caption.focus({ preventScroll: true });
+
   const next = QUESTIONS[index + 1];
   warmImage(next ? next.img : QUESTIONS[QUESTIONS.length - 1].img);
-  // on the last stop, fetch the souvenirs so the chest opens without a stall
   if (index === QUESTIONS.length - 1) {
     for (const result of Object.values(RESULTS)) warmImage(result.img);
   }
-  sheet.querySelector('.qtitle').focus({ preventScroll: true });
 }
 
 function finish(axis) {
   currentResult = RESULTS[axis];
   map.hidePlates();
+  stage.classList.remove('stop-open');
   const vault = document.getElementById('vault-plate');
   if (vault) {
     vault.src = QUESTIONS[QUESTIONS.length - 1].img;
     vault.hidden = false;
   }
   rewardHost.replaceChildren(renderReward(currentResult, CONFIG));
-  setHud(QUESTIONS.length);
   chestLayer.hidden = false;
   const chestButton = chestLayer.querySelector('#chest');
   if (chestButton) chestButton.focus({ preventScroll: true });
@@ -193,8 +148,6 @@ const quiz = createQuiz({
   onArrive: null,
   onFinish: finish,
 });
-
-window.addEventListener('resize', syncCameraAnchor);
 
 rewardHost.addEventListener('click', (event) => {
   const button = event.target.closest('[data-act]');

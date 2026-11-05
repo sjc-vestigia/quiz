@@ -1,106 +1,27 @@
 /* HUD, question sheet, reward card, chest, toast. */
 
-/* ---------- HUD: centred footprint progress ---------- */
-#hud {
-  position: absolute;
-  top: calc(env(safe-area-inset-top, 0px) + 10px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 5;
-  width: min(92vw, 400px);
-  padding: 9px 16px 10px;
-  text-align: center;
-}
-
-#hud .eyebrow {
-  justify-content: center;
-  color: var(--wax);
-  font-size: 9.5px;
-  line-height: 1.3;
-}
-
-#hud .eyebrow::before {
-  display: none;
-}
-
-.hud-track {
-  position: relative;
-  margin: 9px 0 7px;
-  padding: 0 2px;
-}
-
-.hud-track::before {
-  content: "";
-  position: absolute;
-  left: 6px;
-  right: 6px;
-  top: 50%;
-  border-top: 1px dashed rgba(59, 47, 30, 0.4);
-}
-
-.hud-steps {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.step {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 32px;
-  color: rgba(59, 47, 30, 0.26);
-  transition: color 0.35s ease, transform 0.35s ease;
-}
-
-.step svg {
-  display: block;
-  width: 18px;
-  height: 27px;
-  fill: currentColor;
-}
-
-.step.on {
-  color: var(--wax);
-}
-
-.step:nth-child(odd) svg {
-  transform: rotate(-12deg);
-}
-
-.step:nth-child(even) svg {
-  transform: rotate(10deg);
-}
-
-.step.current {
-  transform: scale(1.14);
-}
-
-.hud-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  font-family: var(--font-display);
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  font-variant-caps: small-caps;
-  color: var(--ink);
-}
-
 /* ---------- panel + sheets ---------- */
 #panel {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 10;
   display: flex;
+  align-items: flex-end;
   justify-content: center;
   padding: 0 12px calc(env(safe-area-inset-bottom, 0px) + 12px);
   pointer-events: none;
   transition: opacity 0.22s ease;
+}
+
+/* a stop is a centred card over a blurred map */
+#panel.stop {
+  align-items: center;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 14px calc(env(safe-area-inset-bottom, 0px) + 12px);
+}
+
+#stage.stop-open #map {
+  filter: blur(3.5px) saturate(0.9) brightness(0.94);
+  transition: filter 0.3s ease;
 }
 
 /* while the marker walks, the sheet gets out of the way completely */
@@ -154,70 +75,180 @@
   max-width: 34ch;
 }
 
-.qnum {
+/* ---------- stop card ---------- */
+.stop-card {
+  pointer-events: auto;
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 16px 16px;
+  text-align: center;
+  animation: stop-in 0.38s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes stop-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.stop-num {
   font-family: var(--font-display);
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  font-variant-caps: small-caps;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
   color: var(--wax);
 }
 
-.qtitle {
-  margin: 6px 0 6px;
-  font-size: clamp(22px, 6.6vw, 30px);
-  line-height: 1.04;
+.stop-plate {
+  margin: 10px 0 0;
 }
 
-.qtitle:focus-visible {
+.stop-media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-height: 38vh;
+  overflow: hidden;
+  background: #c9b993;
+  box-shadow: inset 0 0 0 1px rgba(59, 47, 30, 0.45), inset 0 0 18px rgba(60, 40, 15, 0.5);
+  border-radius: 2px 9px 3px 7px / 7px 3px 9px 2px;
+}
+
+.stop-media::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: 2;
+  border: 1px solid rgba(244, 234, 210, 0.35);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.stop-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 100% at 50% 40%, rgba(244, 234, 210, 0) 42%, rgba(138, 108, 58, 0.38) 100%),
+    var(--grain);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.stop-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 55%;
+  filter: sepia(0.45) saturate(0.72) contrast(1.06) brightness(1.12);
+}
+
+.stop-plate figcaption {
+  margin: 11px 4px 0;
+  font-family: var(--font-display);
+  font-size: clamp(17px, 4.9vw, 23px);
+  line-height: 1.16;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+
+.stop-plate figcaption:focus-visible {
   outline: 2px solid var(--wax);
   outline-offset: 4px;
 }
 
-.qhint {
-  font-size: 13px;
+.stop-hint {
+  margin: 8px 0 14px;
+  font-size: 12.5px;
   line-height: 1.4;
   color: var(--ink-soft);
-  margin-bottom: 12px;
 }
 
-.opts {
+.signs {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
-.opt {
+/* an answer is a plank sign: two nails, ink text, a small lean */
+.sign {
+  position: relative;
   display: block;
   width: 100%;
-  min-height: 48px;
-  padding: 11px 14px;
+  min-height: 50px;
+  margin: 0;
+  padding: 11px 26px;
   text-align: left;
   font-size: 16px;
-  line-height: 1.25;
+  line-height: 1.22;
   color: var(--ink);
-  background: rgba(255, 250, 232, 0.45);
-  border-left: 4px solid var(--wax);
-  border-radius: 2px 10px 3px 8px / 8px 3px 10px 4px;
-  box-shadow: inset 0 0 0 1px rgba(59, 47, 30, 0.22);
-  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+  background:
+    linear-gradient(180deg, rgba(255, 252, 240, 0.55), rgba(150, 112, 54, 0.12)),
+    #eeddbd;
+  border: 1px solid rgba(92, 66, 30, 0.55);
+  border-radius: 3px 9px 4px 8px / 8px 4px 9px 3px;
+  box-shadow: 0 3px 0 rgba(92, 66, 30, 0.28), 0 8px 16px rgba(40, 26, 8, 0.22);
+  transform: rotate(-0.35deg);
+  transition: transform 0.14s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
 
-.opt:hover,
-.opt:focus-visible {
-  background: rgba(255, 250, 232, 0.82);
-  box-shadow: inset 0 0 0 1px rgba(139, 47, 31, 0.55);
+.sign:nth-child(2) {
+  transform: rotate(0.4deg);
 }
 
-.opt:active {
-  transform: scale(0.995);
-  background: rgba(139, 47, 31, 0.14);
+.sign:nth-child(3) {
+  transform: rotate(-0.2deg);
 }
 
-.opt small {
+.sign::before,
+.sign::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #e2d0a4, #6a4a22 70%);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.35);
+}
+
+.sign::before {
+  left: 8px;
+}
+
+.sign::after {
+  right: 8px;
+}
+
+.sign small {
   display: block;
   margin-top: 3px;
   font-size: 12.5px;
   color: var(--ink-soft);
+}
+
+.sign:hover,
+.sign:focus-visible {
+  transform: translateY(-1px) rotate(0deg);
+  background:
+    linear-gradient(180deg, rgba(255, 253, 244, 0.75), rgba(150, 112, 54, 0.16)),
+    #f2e3c6;
+  box-shadow: 0 4px 0 rgba(92, 66, 30, 0.3), 0 10px 20px rgba(40, 26, 8, 0.26);
+}
+
+.sign:active {
+  transform: translateY(1px) rotate(0deg);
+  box-shadow: 0 2px 0 rgba(92, 66, 30, 0.3);
 }
 
 .trail {
@@ -617,15 +648,17 @@
   .sheet h1 {
     font-size: clamp(30px, 8vw, 44px);
   }
-  .qtitle {
-    font-size: clamp(20px, 6vw, 26px);
+  .stop-plate figcaption {
+    font-size: clamp(16px, 4.4vw, 20px);
   }
-  .qhint {
-    font-size: 12.5px;
-    margin-bottom: 9px;
+  .stop-media {
+    max-height: 30vh;
   }
-  .opt {
-    padding: 9px 12px;
+  .stop-card {
+    padding: 12px 13px 13px;
+  }
+  .sign {
+    padding: 9px 24px;
     font-size: 15px;
   }
   .trail {
@@ -647,9 +680,37 @@
   .sheet h1 {
     font-size: 28px;
   }
-  #hud {
-    width: min(74vw, 430px);
-    padding: 7px 14px 8px;
+  #panel.stop {
+    padding: 8px 12px;
+  }
+  .stop-card {
+    max-width: 640px;
+    max-height: calc(100dvh - 16px);
+  }
+  .stop-plate figcaption {
+    font-size: 15px;
+    margin-top: 6px;
+  }
+  .stop-media {
+    aspect-ratio: auto;
+    height: 34vh;
+    max-height: none;
+  }
+  .stop-hint {
+    display: none;
+  }
+  .signs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .sign {
+    font-size: 13px;
+    padding: 8px 20px;
+    min-height: 44px;
+  }
+  .sign small {
+    display: none;
   }
   .reward {
     max-height: calc(100dvh - 24px);
