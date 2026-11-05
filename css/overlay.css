@@ -493,7 +493,7 @@
 #chest-layer > #chest,
 #chest-layer > .reward-host {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 
 #chest-layer[hidden] {
@@ -510,11 +510,100 @@
 }
 
 #chest {
-  width: 170px;
-  max-width: 46vw;
+  width: 190px;
+  max-width: 48vw;
   padding: 0;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 26px rgba(255, 198, 104, 0.22));
   transition: opacity 0.4s ease, transform 0.4s ease;
+  animation: chest-in 0.9s cubic-bezier(0.2, 0.7, 0.3, 1) 0.35s backwards;
+}
+
+@keyframes chest-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* clouds drift in behind the chest */
+.clouds {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  width: clamp(160px, 46vw, 280px);
+  height: clamp(58px, 16vw, 96px);
+  border-radius: 50%;
+  background: rgba(255, 253, 245, 0.55);
+  filter: blur(3px);
+  opacity: 0;
+  animation: cloud-fly 1.6s cubic-bezier(0.16, 0.8, 0.3, 1) forwards;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+
+.cloud::before {
+  width: 56%;
+  height: 132%;
+  left: 7%;
+  top: -54%;
+}
+
+.cloud::after {
+  width: 44%;
+  height: 108%;
+  right: 11%;
+  top: -40%;
+}
+
+.c1 {
+  top: 6%;
+  left: -8%;
+  --from: -52vw;
+  animation-delay: 0.05s;
+}
+
+.c2 {
+  top: 22%;
+  right: -10%;
+  --from: 56vw;
+  animation-delay: 0.16s;
+}
+
+.c3 {
+  bottom: 8%;
+  left: 12%;
+  --from: -44vw;
+  animation-delay: 0.28s;
+}
+
+@keyframes cloud-fly {
+  from {
+    opacity: 0;
+    transform: translate3d(var(--from), 20px, 0) scale(0.72);
+  }
+  55% {
+    opacity: 0.9;
+  }
+  to {
+    opacity: 0.62;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
 }
 
 #chest svg {
@@ -557,38 +646,33 @@
   }
 }
 
-.chest-wood {
-  fill: #7a5330;
-  stroke: #2b1a0d;
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
-.chest-band {
-  fill: #3f2a18;
-  stroke: #2b1a0d;
-  stroke-width: 1;
-}
-
 .chest-rivet {
-  fill: var(--gold);
+  fill: url(#gold);
+  stroke: rgba(60, 38, 12, 0.55);
+  stroke-width: 0.6;
 }
 
 .chest-lock {
-  fill: var(--gold);
-  stroke: #2b1a0d;
-  stroke-width: 1.5;
+  fill: url(#gold);
+  stroke: #3a240f;
+  stroke-width: 1.4;
 }
 
 .chest-keyhole {
+  fill: #2a1a0b;
+  stroke: #2a1a0b;
+  stroke-width: 1;
+}
+
+.chest-keyhole-slot {
   fill: none;
-  stroke: #2b1a0d;
+  stroke: #2a1a0b;
   stroke-width: 2.4;
   stroke-linecap: round;
 }
 
 .chest-shadow {
-  fill: rgba(0, 0, 0, 0.35);
+  fill: rgba(10, 8, 4, 0.42);
 }
 
 /* hinged at the back edge: the lid tips away from the viewer instead of
@@ -600,12 +684,12 @@
 }
 
 #chest-lid.lift {
-  transform: translateY(-3px) scaleY(0.42);
-  opacity: 0.9;
+  transform: translateY(4px) scaleY(0.42);
+  opacity: 0.95;
 }
 
 .chest-interior {
-  fill: #2a1a0e;
+  fill: url(#hole);
   opacity: 0;
   transition: opacity 0.45s ease 0.15s;
 }
