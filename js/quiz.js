@@ -26,24 +26,6 @@ export function createQuiz({
 
   const setMarker = (p) => marker.setAttribute('transform', `translate(${p.x.toFixed(2)},${p.y.toFixed(2)})`);
 
-  function ink(path, dur) {
-    path.classList.add('inked');
-    if (reduced()) return;
-    const len = path.getTotalLength();
-    path.style.strokeDasharray = `${len} ${len}`;
-    path.style.strokeDashoffset = String(len);
-    path.style.animation = `ink ${dur}ms linear forwards`;
-    path.addEventListener(
-      'animationend',
-      () => {
-        path.style.animation = '';
-        path.style.strokeDasharray = '';
-        path.style.strokeDashoffset = '';
-      },
-      { once: true }
-    );
-  }
-
   // Footprints drop in exactly where the marker has already walked.
   function stamp(set, travelled) {
     if (!set) return;
@@ -104,7 +86,6 @@ export function createQuiz({
     const path = routes[leg][axis];
     const set = prints[leg] ? prints[leg][axis] : null;
     const dur = Math.max(700, Math.min(1400, path.getTotalLength() / 900));
-    ink(path, dur);
 
     travel(path, dur, set, () => {
       if (myGen !== gen) return;

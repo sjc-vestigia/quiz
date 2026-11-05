@@ -112,43 +112,31 @@
 
 /* routes: faint until walked, then inked in wax with a draw-on */
 .route {
+  /* geometry carrier only: the footprints below are the visible trail */
   fill: none;
-  stroke: var(--ink-soft);
-  stroke-width: calc(2px / var(--s, 1));
-  stroke-dasharray: 4 7;
-  stroke-linecap: round;
-  opacity: 0.35;
+  stroke: none;
 }
 
-.route.inked {
-  stroke: var(--wax);
-  stroke-dasharray: none;
-  stroke-width: calc(1.6px / var(--s, 1));
-  opacity: 0.6;
-}
+
 
 /* the walked trail itself: footprints stamped behind the walker */
 .prints-set {
   pointer-events: none;
 }
 
+/* every route is walked as a line of prints: grey until the walker steps on it */
 .print {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.22s ease, visibility 0s 0.22s;
+  fill: var(--trail-off);
+  stroke: rgba(59, 47, 30, 0.22);
+  stroke-width: 0.6;
+  opacity: 0.5;
+  transition: fill 0.18s ease, opacity 0.18s ease;
 }
 
 .print.on {
-  opacity: 0.72;
-  visibility: visible;
-  transition: opacity 0.22s ease;
-}
-
-.print-sole,
-.print-heel {
-  fill: var(--wax);
-  stroke: rgba(59, 47, 30, 0.5);
-  stroke-width: 0.7;
+  fill: var(--trail);
+  stroke: rgba(92, 58, 18, 0.55);
+  opacity: 0.95;
 }
 
 .region-label.inked {
@@ -156,11 +144,6 @@
   opacity: 1;
 }
 
-@keyframes ink {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
 
 /* nodes */
 .node-ring {
@@ -406,11 +389,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marker-halo {
-    animation: none;
-  }
-  .route,
-  .route.inked {
-    animation: none;
+  .print {
+    transition: none;
   }
 }

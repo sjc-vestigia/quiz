@@ -7,6 +7,10 @@
   --sea: #cbb98f;
   --wax: #8b2f1f;
   --gold: #b08948;
+  /* the VESTIGIA title yellow, sampled from the promo still, deepened so it
+     holds up on parchment */
+  --trail: #e8b02c;
+  --trail-off: #8d8574;
   --desk: #1b1410;
   --font-display: "Cinzel", "Times New Roman", Times, serif;
   --font-body: "IM Fell English", "Times New Roman", Times, serif;

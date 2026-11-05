@@ -166,12 +166,13 @@ function nodeGlyph(id, node, i) {
 }
 
 // A single footprint stamp; mirrored left/right along the trail.
+// one path for both shapes: half the elements in the map
 const PRINT =
-  '<ellipse class="print-sole" cy="-2.6" rx="3.1" ry="6.2"/>' +
-  '<ellipse class="print-heel" cy="8.4" rx="2.05" ry="2.7"/>';
+  'M-3.1,-2.6 a3.1,6.2 0 1,0 6.2,0 a3.1,6.2 0 1,0 -6.2,0 Z ' +
+  'M-2.05,8.4 a2.05,2.7 0 1,0 4.1,0 a2.05,2.7 0 1,0 -4.1,0 Z';
 
 function buildPrints(root, legs, routes) {
-  const step = 50;
+  const step = 58;
   return legs.map((leg, i) => {
     const set = {};
     for (const axis of Object.keys(leg.routes)) {
@@ -187,14 +188,14 @@ function buildPrints(root, legs, routes) {
         const deg = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
         const rad = ((deg + 90) * Math.PI) / 180;
         const side = n % 2 === 0 ? 1 : -1;
-        const g = document.createElementNS(NS, 'g');
+        const g = document.createElementNS(NS, 'path');
         g.setAttribute('class', 'print');
+        g.setAttribute('d', PRINT);
         g.setAttribute(
           'transform',
-          `translate(${(p.x + Math.cos(rad) * 11 * side).toFixed(1)},${(p.y + Math.sin(rad) * 11 * side).toFixed(1)}) ` +
-            `rotate(${(deg + 90).toFixed(1)}) scale(${(side * 1.7).toFixed(2)} 1.7)`
+          `translate(${(p.x + Math.cos(rad) * 10 * side).toFixed(1)},${(p.y + Math.sin(rad) * 10 * side).toFixed(1)}) ` +
+            `rotate(${(deg + 90).toFixed(1)}) scale(${(side * 1.5).toFixed(2)} 1.5)`
         );
-        g.innerHTML = PRINT;
         host.appendChild(g);
         items.push({ el: g, at });
         n += 1;
