@@ -259,15 +259,6 @@
   opacity: 0.5;
 }
 
-.plate-photo {
-  filter: sepia(0.5) saturate(0.72) contrast(1.06) brightness(1.02);
-}
-
-.plate-tint {
-  fill: rgba(232, 220, 192, 0.4);
-  pointer-events: none;
-}
-
 .plate-caption {
   font-family: var(--font-display);
   font-size: 11px;

@@ -133,7 +133,6 @@ function nodePlate(id, node, plate, label) {
     `<rect class="plate-rule" x="${x + 3}" y="${y + 3}" width="${W - 6}" height="${IH - 6}" rx="2"/>` +
     `<image class="plate-photo" x="${ix}" y="${iy}" width="${iw}" height="${ih}" ` +
     `preserveAspectRatio="xMidYMid slice" clip-path="url(#${clip})"/>` +
-    `<rect class="plate-tint" x="${ix}" y="${iy}" width="${iw}" height="${ih}"/>` +
     `<text class="plate-caption" x="${node.x}" y="${y + IH + 15}">${plate.plate} · ${label}</text>` +
     '</g>'
   );
