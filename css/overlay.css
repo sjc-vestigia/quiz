@@ -862,3 +862,18 @@
   }
 }
 
+/* the poster cannot be shown whole in portrait, so the paper stops being a
+   floating card and takes the full width, flush to the bottom edge */
+@media (orientation: portrait) {
+  #panel {
+    padding: 0;
+  }
+  .sheet {
+    max-width: none;
+    /* a bottom sheet, not a card: square to the screen edges, rounded at the
+       top only, and no outline drawing a line along the bezel */
+    border-radius: 14px 14px 0 0;
+    outline: none;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+}
