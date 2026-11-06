@@ -175,7 +175,6 @@
   justify-content: center;
   padding: 0 12px calc(env(safe-area-inset-bottom, 0px) + 12px);
   pointer-events: none;
-  transition: opacity 0.22s ease;
 }
 
 /* a stop is a centred card over a blurred map */
@@ -189,7 +188,9 @@
   transition: filter 0.3s ease;
 }
 
-/* while the marker walks, the sheet gets out of the way completely */
+/* while the marker walks, the sheet gets out of the way completely. The
+   transition lives on .away only: it fades out on the way, but comes back
+   instantly, so the incoming card's own fade is the only fade you see */
 #panel.away {
   opacity: 0;
   visibility: hidden;
@@ -251,17 +252,17 @@
   -webkit-overflow-scrolling: touch;
   padding: 14px 16px 16px;
   text-align: center;
-  animation: stop-in 0.38s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  /* a plain fade: no slide, no scale, so the card settles instead of moving
+     under the reader's eye */
+  animation: stop-in 0.34s ease both;
 }
 
 @keyframes stop-in {
   from {
     opacity: 0;
-    transform: translateY(10px) scale(0.99);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 

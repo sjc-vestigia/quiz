@@ -61,17 +61,32 @@ function renderCover() {
 const reducedMotion = () =>
   typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Longest thing in the intro: the last cloud is 1.3s plus a 0.32s stagger, and
+// the poster has faded out by 1.2s. The card must not arrive before both.
+const INTRO_MS = 1700;
+// The map alone, with nothing over it, before the first card covers it.
+const MAP_BEAT_MS = 420;
+
 function startWalk() {
   if (intro.classList.contains('leaving')) return;
   intro.classList.add('leaving');
   panel.classList.add('away');
-  const revealMap = () => {
-    intro.classList.add('gone');
-    // the map stands on its own for a beat before the first card covers it
-    setTimeout(() => quiz.start(), reducedMotion() ? 0 : 420);
-  };
-  if (reducedMotion()) revealMap();
-  else setTimeout(revealMap, 1650);
+  if (reducedMotion()) {
+    showMapThenWalk();
+    return;
+  }
+  setTimeout(showMapThenWalk, INTRO_MS);
+}
+
+function showMapThenWalk() {
+  intro.classList.add('gone');
+  // two frames: one to drop the intro, one to paint the map that was behind
+  // it, so the card never lands on a half-revealed stage
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      setTimeout(() => quiz.start(), reducedMotion() ? 0 : MAP_BEAT_MS);
+    });
+  });
 }
 
 function renderQuestion(index) {
