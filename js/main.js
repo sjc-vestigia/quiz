@@ -79,12 +79,18 @@ function startWalk() {
 
 function showMapThenWalk() {
   intro.classList.add('gone');
-  panel.classList.remove('sliding');
+  // Hide the panel in the same frame it is put back in place. Resetting the
+  // transform first snaps it to y=0 while still opaque, which flashes the
+  // cover card for a fifth of a second before it fades out.
+  panel.style.transition = 'none';
   panel.classList.add('away');
-  // two frames: one to drop the intro, one to paint the map that was behind
-  // it, so the card never lands on a half-revealed stage
+  panel.classList.remove('sliding');
+  // two frames: one to drop the intro and hide the panel, one to paint the map
+  // that was behind it, so the card never lands on a half-revealed stage
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
+      // the panel is hidden now; give it back its transitions for the walk
+      panel.style.transition = '';
       setTimeout(() => quiz.start(), reducedMotion() ? 0 : MAP_BEAT_MS);
     });
   });
