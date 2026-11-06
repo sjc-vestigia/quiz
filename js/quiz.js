@@ -85,7 +85,10 @@ export function createQuiz({
     const myGen = gen;
     const path = routes[leg][axis];
     const set = prints[leg] ? prints[leg][axis] : null;
-    const dur = Math.max(700, Math.min(1400, path.getTotalLength() / 900));
+    // ~2 ms per world unit, so a long leg visibly takes longer. Slower than
+    // the old flat 700 ms on purpose: a phone dropping frames still reads as
+    // walking rather than a jump cut.
+    const dur = Math.max(1300, Math.min(2400, path.getTotalLength() * 2));
 
     travel(path, dur, set, () => {
       if (myGen !== gen) return;
