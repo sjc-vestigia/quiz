@@ -352,23 +352,41 @@
   opacity: 0.4;
 }
 
-/* player marker */
+/* player marker: the walker, in school uniform — white shirt, grey trousers,
+   green tie */
 .marker-halo {
   fill: var(--paper-hi);
   opacity: 0.6;
 }
 
-.marker-sole,
-.marker-heel {
-  fill: var(--wax);
+.marker-student > * {
   stroke: var(--ink);
-  stroke-width: calc(1.1px / var(--s, 1));
+  stroke-width: calc(0.9px / var(--s, 1));
+  stroke-linejoin: round;
 }
 
-.marker-notch {
-  fill: var(--gold);
-  stroke: var(--ink);
-  stroke-width: calc(0.8px / var(--s, 1));
+.m-shirt {
+  fill: #f6f3e8;
+}
+
+.m-trouser {
+  fill: #8f8d86;
+}
+
+.m-tie {
+  fill: #1d6b3f;
+}
+
+.m-skin {
+  fill: #d9b48f;
+}
+
+.m-hair {
+  fill: #2a2119;
+}
+
+.m-shoe {
+  fill: #3b2f1e;
 }
 
 

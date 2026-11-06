@@ -340,10 +340,24 @@ export function buildWorld({ svg, world, nodes, legs, plates }) {
   parts.push(
     '<g id="marker" class="marker">' +
       '<g transform="scale(1.45)">' +
-      '<circle class="marker-halo" r="19"/>' +
-      '<ellipse class="marker-sole" cy="-2.6" rx="5" ry="9.4"/>' +
-      '<ellipse class="marker-heel" cy="11" rx="3.2" ry="4"/>' +
-      '<path class="marker-notch" d="M0,-16 L4.4,-22 -4.4,-22 Z"/>' +
+      '<circle class="marker-halo" cy="-15" r="17"/>' +
+      '<g class="marker-student">' +
+      // shoes
+      '<path class="m-shoe" d="M-4.9,-1.5 h4.3 v1.9 h-4.3 z"/>' +
+      '<path class="m-shoe" d="M0.6,-1.5 h4.3 v1.9 h-4.3 z"/>' +
+      // grey trousers
+      '<path class="m-trouser" d="M-4.4,-10.6 h8.8 l-0.6,9.4 h-3.1 l-0.7,-6 -0.7,6 h-3.1 z"/>' +
+      // white shirt
+      '<path class="m-shirt" d="M-5.1,-19.6 q5.1,-2 10.2,0 l0.6,9.2 q-5.7,1.5 -11.4,0 z"/>' +
+      '<path class="m-shirt" d="M-5.1,-19.6 l-2.1,1.4 1.1,5.6 1.8,-0.6 z"/>' +
+      '<path class="m-shirt" d="M5.1,-19.6 l2.1,1.4 -1.1,5.6 -1.8,-0.6 z"/>' +
+      // green tie
+      '<path class="m-tie" d="M-1.1,-20.2 h2.2 l-0.3,2 1,5.9 -1.8,1.5 -1.8,-1.5 1,-5.9 z"/>' +
+      // neck, head, hair
+      '<rect class="m-skin" x="-1.5" y="-22.1" width="3" height="2.6" rx="1.1"/>' +
+      '<circle class="m-skin" cx="0" cy="-26" r="4"/>' +
+      '<path class="m-hair" d="M-4,-26.5 a4,4 0 0 1 8,0 z"/>' +
+      '</g>' +
       '</g>' +
       '</g>'
   );
