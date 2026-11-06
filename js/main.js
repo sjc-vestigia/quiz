@@ -39,7 +39,7 @@ function renderCover() {
   sheet.className = 'sheet parchment';
   sheet.innerHTML =
     `<p class="eyebrow">${CONFIG.eyebrow}</p>` +
-    '<h1>WHAT<br><em>TRACE</em><br>DID YOU<br>LEAVE?</h1>' +
+    '<h1>WHAT <em>TRACE</em><br>DID YOU LEAVE?</h1>' +
     '<p class="sub">Walk the route in 30 seconds. 4 decisions. Get your walker type. ' +
     'Screenshot to win one of 3 souvenirs.</p>' +
     '<div class="trail"><div class="dot">👣</div>' +

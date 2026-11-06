@@ -21,6 +21,24 @@
   transition: opacity 1.2s ease-in, transform 2.6s ease;
 }
 
+/* the poster is 16:9. `cover` on a portrait phone crops it to the middle
+   quarter and cuts VESTIGIA on both sides, so scale by width instead and let
+   the sheet cover the slack at the bottom */
+@media (orientation: portrait) {
+  .intro-photo {
+    background-size: auto 72%;
+    background-position: center top;
+  }
+}
+
+/* short phones: the sheet takes a bigger share, so the poster shrinks with it
+   and the wordmark still lands above the paper */
+@media (orientation: portrait) and (max-height: 740px) {
+  .intro-photo {
+    background-size: auto 62%;
+  }
+}
+
 /* keeps the parchment sheet legible over the bright poster */
 .intro-photo::after {
   content: "";
@@ -195,7 +213,7 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding: 18px 18px 16px;
+  padding: 16px 18px 14px;
   animation: sheet-in 0.45s ease both;
 }
 
