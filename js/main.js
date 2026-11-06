@@ -10,6 +10,7 @@ import { shareResult } from './share.js';
 const stage = document.getElementById('stage');
 const svg = document.getElementById('map');
 const panel = document.getElementById('panel');
+const intro = document.getElementById('intro');
 const revealLayer = document.getElementById('reveal-layer');
 const rewardHost = revealLayer.querySelector('[data-reward]');
 
@@ -52,7 +53,25 @@ function renderCover() {
   stage.classList.remove('stop-open');
   paint(sheet);
   map.showPlate('start', COVER.img);
-  sheet.querySelector('#start-btn').addEventListener('click', () => quiz.start());
+  sheet.querySelector('#start-btn').addEventListener('click', () => startWalk());
+}
+
+// The poster holds the stage until the walk starts; then clouds roll across
+// and the map is what is left behind.
+const reducedMotion = () =>
+  typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function startWalk() {
+  if (intro.classList.contains('leaving')) return;
+  intro.classList.add('leaving');
+  panel.classList.add('away');
+  const revealMap = () => {
+    intro.classList.add('gone');
+    // the map stands on its own for a beat before the first card covers it
+    setTimeout(() => quiz.start(), reducedMotion() ? 0 : 420);
+  };
+  if (reducedMotion()) revealMap();
+  else setTimeout(revealMap, 1650);
 }
 
 function renderQuestion(index) {
@@ -129,6 +148,7 @@ const reveal = createReveal({
 function restart() {
   reveal.close();
   currentResult = null;
+  intro.classList.remove('leaving', 'gone');
   renderCover();
   quiz.reset();
   const start = document.getElementById('start-btn');

@@ -10,7 +10,7 @@ Static files only — no build step, no bundler, no backend, no analytics, no co
 
 ## How it plays
 
-1. **Cover** — the theme question, the promise (30 seconds, 4 decisions), the prize hook.
+1. **Cover** — the VESTIGIA poster fills the stage, the theme question sits over it. Start the walk and clouds drift across, the poster fades, and the map is what is left behind.
 2. **Four stops** — Trailhead, The Fork, The Climb, The Lookout. Each answer sends the marker down one of three branches of that leg; footprints stamp along the route behind it.
 3. **The Hoard** — at the end of the fourth leg the map dims, dust lifts, and the result card is uncovered: walker type, the prize it maps to, the entry rule and the donation ladder. Nothing to click; the reveal starts on arrival.
 4. **Walk again** — resets scores, ink, footprints and camera.
@@ -21,7 +21,7 @@ Scoring is three counters (`k`, `s`, `p`), one per answer axis; the highest wins
 
 | Path | Contents |
 |---|---|
-| `index.html` | Shell: `<svg id="map">`, panel, uncover layer, toast |
+| `index.html` | Shell: intro poster + clouds, `<svg id="map">`, panel, uncover layer, toast |
 | `js/config.js` | Event facts: eyebrow, date, handle, hashtag, winners note, cartouche |
 | `js/data.js` | Single source of truth: world size, node coordinates, 12 routes, questions, results, plate anchors |
 | `js/map.js` | `buildWorld()` — coastline, rivers, terrain, routes, footprint stamps, node medallions, route labels, compass, scale, cartouche, framed stills |

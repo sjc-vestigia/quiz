@@ -1,5 +1,135 @@
 /* Shell, stop cards, reward uncover, toast. */
 
+/* ---------- intro: the poster, then clouds into the map ---------- */
+#intro {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--desk);
+}
+
+#intro.gone {
+  visibility: hidden;
+}
+
+.intro-photo {
+  position: absolute;
+  inset: 0;
+  background: url("../assets/locations/cover.jpg") center / cover no-repeat;
+  transform: scale(1.04);
+  transition: opacity 1.2s ease-in, transform 2.6s ease;
+}
+
+/* keeps the parchment sheet legible over the bright poster */
+.intro-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(27, 20, 16, 0.2) 0%,
+    rgba(27, 20, 16, 0) 30%,
+    rgba(27, 20, 16, 0.66) 100%
+  );
+}
+
+#intro.leaving .intro-photo {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.intro-clouds {
+  position: absolute;
+  inset: 0;
+}
+
+/* wide, soft puffs: a bright crown over a shaded underside, so they still read
+   once the pale map is what is behind them */
+.intro-clouds i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--w, 30vmax);
+  height: calc(var(--w, 30vmax) * 0.6);
+  margin: calc(var(--w, 30vmax) * -0.3) 0 0 calc(var(--w, 30vmax) * -0.5);
+  border-radius: 50%;
+  opacity: 0;
+  background:
+    radial-gradient(
+      ellipse at 50% 78%,
+      rgba(104, 118, 112, 0.28) 0%,
+      rgba(104, 118, 112, 0.12) 45%,
+      rgba(104, 118, 112, 0) 68%
+    ),
+    radial-gradient(
+      ellipse at 50% 42%,
+      rgba(253, 251, 244, 0.98) 0%,
+      rgba(246, 243, 232, 0.9) 40%,
+      rgba(246, 243, 232, 0.34) 62%,
+      rgba(246, 243, 232, 0) 76%
+    );
+}
+
+.intro-clouds i:nth-child(1) {
+  --w: 34vmax; --x0: -34vw; --y0: -22vh; --x1: -48vw; --y1: -32vh; --d: 0s;
+}
+.intro-clouds i:nth-child(2) {
+  --w: 24vmax; --x0: 30vw; --y0: -18vh; --x1: 44vw; --y1: -28vh; --d: 0.06s;
+}
+.intro-clouds i:nth-child(3) {
+  --w: 30vmax; --x0: -26vw; --y0: 6vh; --x1: -42vw; --y1: 12vh; --d: 0.12s;
+}
+.intro-clouds i:nth-child(4) {
+  --w: 20vmax; --x0: 22vw; --y0: 10vh; --x1: 36vw; --y1: 18vh; --d: 0.18s;
+}
+.intro-clouds i:nth-child(5) {
+  --w: 28vmax; --x0: -10vw; --y0: 30vh; --x1: -18vw; --y1: 44vh; --d: 0.24s;
+}
+.intro-clouds i:nth-child(6) {
+  --w: 36vmax; --x0: 14vw; --y0: 34vh; --x1: 26vw; --y1: 48vh; --d: 0.3s;
+}
+.intro-clouds i:nth-child(7) {
+  --w: 22vmax; --x0: -38vw; --y0: 20vh; --x1: -54vw; --y1: 28vh; --d: 0.36s;
+}
+.intro-clouds i:nth-child(8) {
+  --w: 32vmax; --x0: 34vw; --y0: 24vh; --x1: 50vw; --y1: 34vh; --d: 0.42s;
+}
+.intro-clouds i:nth-child(9) {
+  --w: 18vmax; --x0: 2vw; --y0: -34vh; --x1: 8vw; --y1: -48vh; --d: 0.48s;
+}
+
+@keyframes cloud-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--x0), var(--y0), 0) scale(0.8);
+  }
+  40% {
+    opacity: 0.9;
+  }
+  72% {
+    opacity: 0.62;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--x1), var(--y1), 0) scale(1.12);
+  }
+}
+
+#intro.leaving .intro-clouds i {
+  animation: cloud-drift 1.3s cubic-bezier(0.4, 0, 0.3, 1) var(--d, 0s) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-photo {
+    transition: none;
+  }
+  #intro.leaving .intro-clouds i {
+    animation: none;
+  }
+}
+
 /* ---------- panel + sheets ---------- */
 #panel {
   position: absolute;
