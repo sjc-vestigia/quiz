@@ -56,30 +56,31 @@ function renderCover() {
   sheet.querySelector('#start-btn').addEventListener('click', () => startWalk());
 }
 
-// The poster holds the stage until the walk starts; then clouds roll across
-// and the map is what is left behind.
+// The poster holds the stage until the walk starts; then it and the cover card
+// slide down together and the map is what is left behind.
 const reducedMotion = () =>
   typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Longest thing in the intro: the last cloud is 1.3s plus a 0.32s stagger, and
-// the poster has faded out by 1.2s. The card must not arrive before both.
-const INTRO_MS = 1700;
-// The map alone, with nothing over it, before the first card covers it.
-const MAP_BEAT_MS = 420;
+// matches the 0.75s transform transition on #intro and #panel
+const SLIDE_MS = 780;
+// the map alone, with nothing over it, before the first card covers it
+const MAP_BEAT_MS = 320;
 
 function startWalk() {
   if (intro.classList.contains('leaving')) return;
   intro.classList.add('leaving');
-  panel.classList.add('away');
+  panel.classList.add('sliding');
   if (reducedMotion()) {
     showMapThenWalk();
     return;
   }
-  setTimeout(showMapThenWalk, INTRO_MS);
+  setTimeout(showMapThenWalk, SLIDE_MS);
 }
 
 function showMapThenWalk() {
   intro.classList.add('gone');
+  panel.classList.remove('sliding');
+  panel.classList.add('away');
   // two frames: one to drop the intro, one to paint the map that was behind
   // it, so the card never lands on a half-revealed stage
   requestAnimationFrame(() => {
@@ -163,7 +164,10 @@ const reveal = createReveal({
 function restart() {
   reveal.close();
   currentResult = null;
+  // snap the poster back rather than sliding it up over the map
+  intro.classList.add('instant');
   intro.classList.remove('leaving', 'gone');
+  requestAnimationFrame(() => intro.classList.remove('instant'));
   renderCover();
   quiz.reset();
   const start = document.getElementById('start-btn');

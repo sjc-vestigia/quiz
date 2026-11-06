@@ -1,24 +1,33 @@
 /* Shell, stop cards, reward uncover, toast. */
 
-/* ---------- intro: the poster, then clouds into the map ---------- */
+/* ---------- intro: poster and card slide away to reveal the map ---------- */
 #intro {
   position: absolute;
   inset: 0;
   z-index: 2;
   overflow: hidden;
   pointer-events: none;
+  transform: translateY(0);
+  transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* the poster and the cover card leave together, straight down */
+#intro.leaving {
+  transform: translateY(100%);
 }
 
 #intro.gone {
   visibility: hidden;
 }
 
+#intro.instant {
+  transition: none;
+}
+
 .intro-photo {
   position: absolute;
   inset: 0;
   background: url("../assets/locations/cover.jpg") center / cover no-repeat;
-  transform: scale(1.04);
-  transition: opacity 1.2s ease-in, transform 2.6s ease;
 }
 
 /* the poster is 16:9. `cover` on a portrait phone crops it to the middle
@@ -52,116 +61,9 @@
   );
 }
 
-#intro.leaving .intro-photo {
-  opacity: 0;
-  transform: scale(1.1);
-}
-
-.intro-clouds {
-  position: absolute;
-  inset: 0;
-}
-
-/* a cloud is a cluster of lobes, not one ellipse. Each lobe is sized
-   explicitly (a bare `circle at x y` defaults to farthest-corner and swallows
-   the whole box), and the lobes are small enough that the union keeps bumps
-   and notches instead of rounding off into a disc */
-.intro-clouds i {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: var(--w, 30vmax);
-  height: calc(var(--w, 30vmax) * 0.62);
-  margin: calc(var(--w, 30vmax) * -0.31) 0 0 calc(var(--w, 30vmax) * -0.5);
-  opacity: 0;
-  background:
-    radial-gradient(ellipse 12% 19% at 20% 62%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.72) 55%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 13% 21% at 34% 45%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.76) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 13% 22% at 49% 37%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 12% 20% at 64% 44%, rgba(255, 255, 255, 0.97) 0%, rgba(255, 255, 255, 0.74) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 11% 18% at 79% 60%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.66) 55%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 14% 19% at 50% 68%, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.72) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 30% 9% at 50% 88%, rgba(92, 106, 100, 0.28) 0%, rgba(92, 106, 100, 0.1) 60%, rgba(92, 106, 100, 0) 100%);
-}
-
-/* the same idea, re-proportioned, so no two clouds repeat */
-.intro-clouds i:nth-child(3n + 2) {
-  background:
-    radial-gradient(ellipse 11% 17% at 18% 64%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.66) 55%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 12% 20% at 31% 48%, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.72) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 14% 23% at 46% 36%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.82) 60%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 13% 21% at 62% 38%, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.78) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 11% 18% at 78% 54%, rgba(255, 255, 255, 0.93) 0%, rgba(255, 255, 255, 0.66) 55%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 13% 18% at 47% 67%, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.7) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 28% 9% at 48% 88%, rgba(92, 106, 100, 0.26) 0%, rgba(92, 106, 100, 0.09) 60%, rgba(92, 106, 100, 0) 100%);
-}
-
-.intro-clouds i:nth-child(3n) {
-  background:
-    radial-gradient(ellipse 12% 19% at 22% 58%, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.7) 55%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 13% 22% at 37% 40%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 60%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 12% 20% at 52% 34%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.82) 60%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 12% 19% at 67% 46%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 10% 16% at 82% 62%, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.6) 55%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 15% 18% at 44% 68%, rgba(255, 255, 255, 0.93) 0%, rgba(255, 255, 255, 0.68) 58%, rgba(255, 255, 255, 0) 100%),
-    radial-gradient(ellipse 32% 9% at 46% 88%, rgba(92, 106, 100, 0.3) 0%, rgba(92, 106, 100, 0.11) 60%, rgba(92, 106, 100, 0) 100%);
-}
-
-.intro-clouds i:nth-child(1) {
-  --rot: -4deg; --w: 34vmax; --x0: -34vw; --y0: -22vh; --x1: -48vw; --y1: -32vh; --d: 0s;
-}
-.intro-clouds i:nth-child(2) {
-  --rot: 3deg; --w: 24vmax; --x0: 30vw; --y0: -18vh; --x1: 44vw; --y1: -28vh; --d: 0.04s;
-}
-.intro-clouds i:nth-child(3) {
-  --rot: -6deg; --w: 30vmax; --x0: -26vw; --y0: 6vh; --x1: -42vw; --y1: 12vh; --d: 0.08s;
-}
-.intro-clouds i:nth-child(4) {
-  --rot: 2deg; --w: 20vmax; --x0: 22vw; --y0: 10vh; --x1: 36vw; --y1: 18vh; --d: 0.12s;
-}
-.intro-clouds i:nth-child(5) {
-  --rot: 5deg; --w: 28vmax; --x0: -10vw; --y0: 30vh; --x1: -18vw; --y1: 44vh; --d: 0.16s;
-}
-.intro-clouds i:nth-child(6) {
-  --rot: -3deg; --w: 36vmax; --x0: 14vw; --y0: 34vh; --x1: 26vw; --y1: 48vh; --d: 0.2s;
-}
-.intro-clouds i:nth-child(7) {
-  --rot: 4deg; --w: 22vmax; --x0: -38vw; --y0: 20vh; --x1: -54vw; --y1: 28vh; --d: 0.24s;
-}
-.intro-clouds i:nth-child(8) {
-  --rot: -5deg; --w: 32vmax; --x0: 34vw; --y0: 24vh; --x1: 50vw; --y1: 34vh; --d: 0.28s;
-}
-.intro-clouds i:nth-child(9) {
-  --rot: 1deg; --w: 18vmax; --x0: 2vw; --y0: -34vh; --x1: 8vw; --y1: -48vh; --d: 0.32s;
-}
-
-@keyframes cloud-drift {
-  0% {
-    opacity: 0;
-    transform: translate3d(var(--x0), var(--y0), 0) rotate(var(--rot, 0deg)) scale(0.72);
-  }
-  36% {
-    opacity: 0.92;
-  }
-  74% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    transform: translate3d(var(--x1), var(--y1), 0) rotate(var(--rot, 0deg)) scale(2.1);
-  }
-}
-
-#intro.leaving .intro-clouds i {
-  animation: cloud-drift 1.3s cubic-bezier(0.4, 0, 0.3, 1) var(--d, 0s) forwards;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .intro-photo {
+  #intro {
     transition: none;
-  }
-  #intro.leaving .intro-clouds i {
-    animation: none;
   }
 }
 
@@ -175,6 +77,13 @@
   justify-content: center;
   padding: 0 12px calc(env(safe-area-inset-bottom, 0px) + 12px);
   pointer-events: none;
+  transform: translateY(0);
+  transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* the cover card leaves with the poster */
+#panel.sliding {
+  transform: translateY(100%);
 }
 
 /* a stop is a centred card over a blurred map */
