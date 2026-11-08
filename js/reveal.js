@@ -1,5 +1,5 @@
-// The ending: the card is uncovered out of the ground rather than pulled from
-// a chest. Nothing to click - the build-up starts on arrival at The Hoard.
+// The ending: the card rises from below, the mirror of the cover sliding down.
+// Nothing to click - the build-up starts on arrival at The Hoard.
 
 export function renderReward(result, config) {
   const card = document.createElement('div');
