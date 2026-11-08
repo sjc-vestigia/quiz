@@ -1,6 +1,6 @@
-// The ending: the card rises from below, the mirror of the cover sliding down.
-// Nothing to click - the build-up starts on arrival at The Hoard.
-import { slideIn } from './motion.js';
+// The ending: the whole layer - backdrop, still, dust, card - slides up from
+// below, the mirror of the cover sliding down. Nothing to click; the build-up
+// starts on arrival at The Hoard.
 
 export function renderReward(result, config) {
   const card = document.createElement('div');
@@ -52,10 +52,12 @@ export function createReveal({ root, onRewardShown }) {
     root.hidden = false;
     root.classList.add('uncovering');
     host.hidden = false;
+    // flush the display:none -> block change, or the transition has no start
+    void root.offsetHeight;
+    root.classList.add('up');
 
     timer = setTimeout(() => {
       host.classList.add('shown');
-      slideIn(host.firstElementChild, '100%', 800, 'cubic-bezier(0.4, 0, 0.2, 1)');
       if (onRewardShown) onRewardShown(host.firstElementChild);
     }, 450);
   }
@@ -65,6 +67,7 @@ export function createReveal({ root, onRewardShown }) {
     shown = false;
     root.hidden = true;
     root.classList.remove('uncovering');
+    root.classList.remove('up');
     host.hidden = true;
     host.classList.remove('shown');
     host.replaceChildren();

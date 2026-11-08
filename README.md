@@ -12,7 +12,7 @@ Static files only — no build step, no bundler, no backend, no analytics, no co
 
 1. **Cover** — the VESTIGIA poster fills the stage, the theme question sits over it. Start the walk and clouds drift across, the poster fades, and the map is what is left behind.
 2. **Four stops** — Trailhead, The Fork, The Climb, The Lookout. Each answer sends the marker down one of three branches of that leg; footprints stamp along the route behind it.
-3. **The Hoard** — at the end of the fourth leg the map dims, dust lifts, and the result card is uncovered: walker type, the prize it maps to, the entry rule and the donation ladder. Nothing to click; the reveal starts on arrival.
+3. **The Hoard** — at the end of the fourth leg the whole ending panel — backdrop, still, dust, card — rises from below, the mirror of the cover sliding down: walker type, the prize it maps to, the entry rule and the donation ladder. Nothing to click; the reveal starts on arrival.
 4. **Walk again** — resets scores, ink, footprints and camera.
 
 Scoring is three counters (`k`, `s`, `p`), one per answer axis; the highest wins. Ties resolve toward the later axis (`k → s → p`). A three-way tie is unreachable because the counters always sum to 4.

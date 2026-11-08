@@ -12,10 +12,7 @@ export function slideIn(el, fromY, ms, easing) {
   const duration = parseFloat(style.animationDuration) || 0;
   if (style.animationName !== 'none' && duration > 0.01) return;
   el.animate(
-    [
-      { opacity: 0, transform: `translateY(${fromY})` },
-      { opacity: 1, transform: 'none' },
-    ],
+    [{ transform: `translateY(${fromY})` }, { transform: 'none' }],
     { duration: reduced() ? ms * 0.7 : ms, easing, fill: 'backwards' }
   );
 }

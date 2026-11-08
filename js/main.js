@@ -133,7 +133,7 @@ function renderQuestion(index) {
 
   panel.classList.add('stop');
   paint(card);
-  slideIn(card, '-120px', 550, 'cubic-bezier(0.16, 1, 0.3, 1)');
+  slideIn(card, '-100vh', 750, 'cubic-bezier(0.4, 0, 0.2, 1)');
   stage.classList.add('stop-open');
   map.showPlate(LEGS[index].from, question.img);
 
