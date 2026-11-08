@@ -1,5 +1,6 @@
 // The ending: the card rises from below, the mirror of the cover sliding down.
 // Nothing to click - the build-up starts on arrival at The Hoard.
+import { slideIn } from './motion.js';
 
 export function renderReward(result, config) {
   const card = document.createElement('div');
@@ -54,6 +55,7 @@ export function createReveal({ root, onRewardShown }) {
 
     timer = setTimeout(() => {
       host.classList.add('shown');
+      slideIn(host.firstElementChild, '100%', 800, 'cubic-bezier(0.4, 0, 0.2, 1)');
       if (onRewardShown) onRewardShown(host.firstElementChild);
     }, 450);
   }

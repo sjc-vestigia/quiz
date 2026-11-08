@@ -6,6 +6,7 @@ import { createCamera } from './camera.js';
 import { createQuiz } from './quiz.js';
 import { createReveal, renderReward } from './reveal.js';
 import { shareResult } from './share.js';
+import { slideIn } from './motion.js';
 
 const stage = document.getElementById('stage');
 const svg = document.getElementById('map');
@@ -132,6 +133,7 @@ function renderQuestion(index) {
 
   panel.classList.add('stop');
   paint(card);
+  slideIn(card, '-120px', 550, 'cubic-bezier(0.16, 1, 0.3, 1)');
   stage.classList.add('stop-open');
   map.showPlate(LEGS[index].from, question.img);
 
